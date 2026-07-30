@@ -3,4 +3,8 @@ CREATE TABLE Token(
     TokenNo VARCHAR(20) UNIQUE,
     VisitNo TEXT NOT NULL,
     CreatedAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP 
-)
+
+);
+CONSTRAINT VisitID 
+            FOREIGN KEY (VisitId) 
+            REFERENCES Visits(VisitId),
