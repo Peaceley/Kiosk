@@ -9,6 +9,3 @@ CREATE TABLE Token(
         REFERENCES Visits(VisitId)
 
 );
-
-
-drop table Token
