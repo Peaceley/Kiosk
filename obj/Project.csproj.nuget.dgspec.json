@@ -1,31 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "D:\\project\\Kiosk\\Project.csproj": {}
+    "D:\\queue_system\\Project\\Project.csproj": {}
   },
   "projects": {
-    "D:\\project\\Kiosk\\Project.csproj": {
+    "D:\\queue_system\\Project\\Project.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\project\\Kiosk\\Project.csproj",
+        "projectUniqueName": "D:\\queue_system\\Project\\Project.csproj",
         "projectName": "Project",
-        "projectPath": "D:\\project\\Kiosk\\Project.csproj",
-        "packagesPath": "C:\\Users\\JESSE\\.nuget\\packages\\",
-        "outputPath": "D:\\project\\Kiosk\\obj\\",
+        "projectPath": "D:\\queue_system\\Project\\Project.csproj",
+        "packagesPath": "C:\\Users\\PeaceLey\\.nuget\\packages\\",
+        "outputPath": "D:\\queue_system\\Project\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\JESSE\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\PeaceLey\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net10.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -70,7 +64,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.302/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.301/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.AspNetCore": "(,10.0.32767]",
             "Microsoft.AspNetCore.Antiforgery": "(,10.0.32767]",

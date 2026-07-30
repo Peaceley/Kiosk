@@ -1,14 +1,14 @@
 CREATE TABLE Visits
 (
-    VisitId INT GENERATED ALWAYS AS IDENTITY,
+    VisitId INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     VisitNo TEXT NOT NULL,
-    PatientId TEXt NOT NULL,
+    PatientId INT NOT NULL,
     MedicalServicesCode TEXT NOT NULL,
-    VisitDate DATETIME NOT NULL,
-    CreatedAt DATETIME DEFAULT CURRENT_TIMESTAMP
-    PRIMARY KEY(id),
+    VisitDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+   
     CONSTRAINT fk_patient 
         FOREIGN KEY (PatientId) 
         REFERENCES Patients(PatientId)
     
-)
+);
