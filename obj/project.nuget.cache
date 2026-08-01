@@ -1,8 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "3f9n6qB0qoc=",
+  "dgSpecHash": "4NAQINlA3mQ=",
   "success": true,
   "projectFilePath": "D:\\project\\Kiosk\\Project.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\JESSE\\.nuget\\packages\\dapper\\2.1.79\\dapper.2.1.79.nupkg.sha512",
+    "C:\\Users\\JESSE\\.nuget\\packages\\npgsql\\10.0.3\\npgsql.10.0.3.nupkg.sha512"
+  ],
   "logs": []
 }
