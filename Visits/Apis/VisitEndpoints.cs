@@ -26,10 +26,13 @@ namespace Kiosk.Visits.Apis
 
             group.MapPost("/", CreateVisit);
 
-            // group.MapGet("/", GetVisits);
-            // group.MapGet("/{VisitNO}", GetVisitByVisitNo);
+            group.MapGet("/", GetVisits);
+            
+            group.MapGet("/{VisitNo}", GetVisitByVisitNo);
 
-            // group.MapDelete("/{VisitNO}", DeleteVisitByVisitNO);
+            group.MapPut("/{VisitNo}", UpdateVisit);
+
+            group.MapDelete("/{VisitNO}", DeleteVisitByVisitNo);
 
             return routes;
         }
@@ -172,25 +175,243 @@ namespace Kiosk.Visits.Apis
 
 
         }
-        
- 
-
-
+    
         //method which handles the get all visits
 
-        // public static Task<IResult> GetVisits()
+        public static async Task<IResult> GetVisits(IDbConnection connection)
+        {
+            //sql command for the inner joins
+        try
+        {
+           const string sql = """
+            SELECT 
+            v.VisitId,
+            v.VisitNo,
+            p.PatientNo,
+            p.FirstName ||' '|| p.LastName AS PatientName,
+            ms.MedicalServiceName,
+            ms.MedicalServiceCode,
+            t.TokenNo AS Token,
+            v.Status,
+            v.VisitDate
+            FROM Visits v
+            INNER JOIN Patients p
+            ON v.PatientId = p.PatientId
+            INNER JOIN MedicalServices ms
+            ON v.MedicalId = ms.MedicalId
+            LEFT JOIN Tokens t
+            ON v.VisitId = t.VisitId
+            ORDER BY v.VisitDate DESC;
+            """;
 
-        //The method to hand the Get visit by VisitNo
+            //
 
-        // public static Task<IResult> GetVisitByVisitNo()
 
+            var visits = await connection.QueryAsync<VisitResponse>(sql);
+
+            return Results.Ok(visits); 
+        }
+        catch (Exception ex)
+        {
+            
+            return Results.Problem(ex.Message);
+        }
+              
+        }
+
+
+        //method for the GetVisitByVisitNo
+
+
+        public static async Task<IResult> GetVisitByVisitNo(string visitNo, IDbConnection connection)
+        {
+            //validating the input of the visitNo
+
+            if (string.IsNullOrWhiteSpace(visitNo))
+            {
+                return Results.BadRequest("visit number must be provided");
+            }
+
+            try{
+
+            const string sql = """
+                SELECT
+                Visits.VisitId,
+                Visits.VisitNo,
+                Patients.PatientNo,
+                Patients.FirstName || ' ' || Patients.LastName AS PatientName,
+                MedicalServices.MedicalServiceName,
+                MedicalServices.MedicalServiceCode,
+                Tokens.TokenNo AS Token,
+                Visits.Status,
+                Visits.VisitDate
+                FROM Visits
+                INNER JOIN Patients
+                    ON Visits.PatientId = Patients.PatientId
+                INNER JOIN MedicalServices
+                    ON Visits.MedicalId = MedicalServices.MedicalId
+                LEFT JOIN Tokens
+                    ON Visits.VisitId = Tokens.VisitId
+                WHERE Visits.VisitNo = @VisitNo;
+            
+            
+            """;
+
+            var visit = await connection.QuerySingleOrDefaultAsync<VisitResponse>(sql,
+            new
+            {
+                VisitNo = visitNo
+            });
+
+
+            //handling the null
+
+            if(visit== null)
+            {
+                return Results.NotFound("Visit not found");
+            }
+
+            
+
+            return Results.Ok(visit);
+
+            }catch(Exception ex)
+            {
+                return Results.Problem(ex.Message);
+            }
+        }
+
+        //updating the visit.   //update the status
+
+        public static async Task<IResult> UpdateVisit (string visitNo, UpdateVisitRequest request, IDbConnection connection)
+        {
+            try
+            {
+                if(string.IsNullOrWhiteSpace(request.Status))
+                    {
+                        return Results.BadRequest("Status must be provided");
+                    }
+
+                //checking if the visist existis
+
+            var visitId = await connection.QuerySingleOrDefaultAsync<int?>(
+                """
+                SELECT VisitId
+                FROM Visits
+                WHERE VisitNo = @VisitNo;
+                """,
+                new
+                {
+                    VisitNo = visitNo
+                });
+
+            if(visitId == null)
+                {
+                    return Results.NotFound("visitId not found");
+                }
+
+            await connection.ExecuteAsync(
+                """
+                UPDATE Visits
+                SET Status = @Status
+                WHERE VisitNo = @VisitNo;
+                """,
+                new
+                {
+                    Status = request.Status,
+                    VisitNo = visitNo
+                });           
+
+//return object
+            return Results.Ok(new
+                {
+                    VisitNo = visitNo,
+                    Status = request.Status
+                });
+            }
+
+
+            catch (Exception ex)
+            {
+                
+                return Results.Problem(ex.Message);
+            }
+        }
+
+      
         //The method to hand the the DeleteVistByvisitNO
-        // public static Task<IResult> DeleteVisitByVisitNO()
+        public static async Task<IResult> DeleteVisitByVisitNo(string visitNo, IDbConnection connection)
+        {
+            try
+            {
+                //deleting token first
+                if (string.IsNullOrWhiteSpace(visitNo))
+                {
+                    return Results.BadRequest("Visitno must be provided");
+
+                }
+                //finding the visitid
+
+                var visitId = await connection.QuerySingleOrDefaultAsync<int?>(
+                    """
+                    SELECT VisitId
+                    FROM Visits
+                    WHERE VisitNo = @VisitNo
+                    """,
+                    new
+                    {
+                        VisitNo = visitNo
+                    }
+
+                );
+
+                //checking if it exisits
 
 
+                if(visitId == null)
+                {
+                    return Results.NotFound("Visit not found");
+                }
 
-        //the method for the endpoint and for the crud
 
+            //deleting the tokne
+
+            await connection.ExecuteAsync(
+            """
+            DELETE FROM Tokens
+            WHERE VisitId = @VisitId;
+            """,
+            new
+            {
+                VisitId = visitId
+            });
+
+
+            //deleting the visit
+            await connection.ExecuteAsync(
+            """
+            DELETE FROM Visits
+            WHERE VisitId = @VisitId;
+            """,
+            new
+            {
+                VisitId = visitId
+            });
+
+            return Results.Ok(new
+            {
+                Message = $"Visit {visitNo} deleted successfully"
+            });
+    
+        
+
+            }
+            catch (Exception ex)
+            {
+                
+                return Results.Problem(ex.Message);
+            }
+        }
 
 
 
