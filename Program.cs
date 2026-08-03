@@ -1,4 +1,5 @@
 using System.Data;
+using Kiosk.MedicalServices.APIs;
 using Kiosk.Visits.Apis;
 using Npgsql;
 
@@ -16,6 +17,7 @@ var app = builder.Build();
 app.MapGet("/", () => "App is running!");
 
 app.MapvisitEndpoints();
+app.MapMedicalServiceEndpoints();
 
 //app.MapPatientEndPoints();
 // app.MapTokenEndpoints();//

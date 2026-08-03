@@ -5,7 +5,7 @@ CREATE TABLE MedicalServices
     MedicalServiceCode TEXT NOT NULL UNIQUE,
     CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 
-)
+);
 
 --THIS CHECKS FOR THE TABLES 
 SELECT table_name
@@ -13,6 +13,7 @@ FROM information_schema.tables
 WHERE table_schema='public';
 
 SELECT * FROM medicalservices;
+SELECT * FROM MedicalServices;
 
 INSERT INTO medicalservices
 (
@@ -36,3 +37,8 @@ VALUES
     'Phamarcy',
     'PHA'
 )
+
+--restarting the medicalservice table
+
+TRUNCATE TABLE MedicalServices RESTART IDENTITY CASCADE;
+DROP TABLE MedicalServices

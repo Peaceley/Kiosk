@@ -74,7 +74,7 @@ namespace Kiosk.Visits.Apis
 
             var sql_medical = """
             SELECT 
-                medicalid AS MedicalServiceId,
+                medicalid AS MedicalId,
                 medicalservicename AS MedicalServiceName,
                 medicalservicecode AS MedicalServiceCode
             FROM MedicalServices
@@ -131,7 +131,7 @@ namespace Kiosk.Visits.Apis
             {
                 VisitNo = visitNo,
                 PatientId = patient.PatientId,
-                MedicalId = medicalservice.MedicalServiceId,
+                MedicalId = medicalservice.MedicalId,
                 Visitdate = DateTime.UtcNow,
                 Status = "WAITING"
             });
@@ -164,7 +164,7 @@ namespace Kiosk.Visits.Apis
                 VisitId = visitId,
                 VisitNo = visitNo,
                 PatientId = patient.PatientId,
-                MedicalServiceId = medicalservice.MedicalServiceId,
+                MedicalServiceId = medicalservice.MedicalId,
                 Token = tokenNumber,
                 Status = "WAITING"
             });

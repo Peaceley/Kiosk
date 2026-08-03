@@ -24,7 +24,7 @@ INSERT INTO patients
 )
 VALUES
 (
-    '26002',
+    '26001',
     'Peace',
     'Isaac',
     'F',
@@ -32,7 +32,7 @@ VALUES
     '070008888'
 ),
 (
-    '26003',
+    '26002',
     'Emmanuel',
     'Grace',
     'M',
@@ -40,14 +40,14 @@ VALUES
     '077777700'
 ),
 (
-    '26004',
+    '26003',
     'jese',
     'Mugisa',
     'M',
     'Kamuli',
     '0700000090'
 ),(
-    '26005',
+    '26004',
     'Othman',
     'kimweri',
     'M',
