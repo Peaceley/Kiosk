@@ -1,6 +1,38 @@
 CREATE TABLE MedicalServices
 (
-    Id INT GENERATED ALWAYS AS IDENTITY ,
-    ServiceCode TEXT NOT NULL,
-    ServiceName TEXT NOT NULL
+    MedicalId INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY ,
+    MedicalServiceName TEXT NOT NULL,
+    MedicalServiceCode TEXT NOT NULL UNIQUE,
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+)
+
+--THIS CHECKS FOR THE TABLES 
+SELECT table_name
+FROM information_schema.tables
+WHERE table_schema='public';
+
+SELECT * FROM medicalservices;
+
+INSERT INTO medicalservices
+(
+    medicalservicename,
+    medicalservicecode
+)
+VALUES
+(
+    'General Consultation',
+    'GEN'
+
+),
+( 'Laboratory',
+ 'LAB'
+ ),
+(
+    'Dental',
+    'DEN'
+),
+(
+    'Phamarcy',
+    'PHA'
 )
