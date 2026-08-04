@@ -44,9 +44,9 @@ namespace Kiosk.MedicalServices.MedicalServiceHelper
             return servicecode.ToUpper();
         }
 
-        internal static async Task<bool> MedicalServiceExists(string medicalServiceCode, IDbConnection connection)
-        {
-            throw new NotImplementedException();
-        }
+        // internal static async Task<bool> MedicalServiceExists(string medicalServiceCode, IDbConnection connection)
+        // {
+        //     throw new NotImplementedException();
+        // }
     }
 }
