@@ -137,7 +137,7 @@ public static class PatientEndpoints
         var sql =
         """
             UPDATE Patients SET   
-                PatientNo=@PatientNo, 
+            
                 FirstName=@FirstName,
                 LastName=@LastName,
                 Gender=@Gender, 
@@ -149,7 +149,7 @@ public static class PatientEndpoints
         var parameter = new
         {
             PatientId = patientId,
-            PatientNo = updateRequest.PatientNo,
+            //PatientNo = updateRequest.PatientNo,
             FirstName = updateRequest.FirstName,
             LastName = updateRequest.LastName,
             Gender = updateRequest.Gender,
