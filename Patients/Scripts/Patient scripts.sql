@@ -7,6 +7,7 @@ CREATE TABLE Patients(
     Gender CHAR NOT NULL,
     Contact TEXT ,
     Address TEXT NOT NULL,
+<<<<<<< HEAD
     CreatedAT TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP 
 
 );
@@ -62,3 +63,9 @@ select * from Medicalservices
 SELECT *
 FROM MedicalServices
 LIMIT 1;
+=======
+    CreatedAt TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP, 
+
+)
+
+>>>>>>> 48a10842e38be3a81f3f90854efe9142d7805c67
