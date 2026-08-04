@@ -7,57 +7,7 @@ CREATE TABLE Patients(
     Gender CHAR NOT NULL,
     Contact TEXT ,
     Address TEXT NOT NULL,
-    CreatedAt TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP);
-INSERT INTO patients
-(
-    patientno,
-    firstname,
-    lastname,
-    gender,
-    Address,
-    contact
+    CreatedAt TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP, 
 
 )
-VALUES
-(
-    '26001',
-    'Peace',
-    'Isaac',
-    'F',
-    'GAYAZA',
-    '070008888'
-),
-(
-    '26002',
-    'Emmanuel',
-    'Grace',
-    'M',
-    'Kima',
-    '077777700'
-),
-(
-    '26003',
-    'jese',
-    'Mugisa',
-    'M',
-    'Kamuli',
-    '0700000090'
-),(
-    '26004',
-    'Othman',
-    'kimweri',
-    'M',
-    'Isingiro',
-    '0700000000'
-)
 
-select * From patients
-
-select * from Medicalservices
-
-SELECT *
-FROM MedicalServices
-LIMIT 1;
-
-
->>>>>>> 48a10842e38be3a81f3f90854efe9142d7805c67
