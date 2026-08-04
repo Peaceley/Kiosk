@@ -20,8 +20,8 @@ namespace Kiosk.MedicalServices.APIs
 
             group.MapPost("/", CreateMedicalService);
 
-            // group.MapGet("/", GetMedicalServices);
-            // group.MapGet("/{medicalcode}", GetMedicalServiceById);
+            group.MapGet("/", GetMedicalServices);
+            group.MapGet("/{medicalId:int}", GetMedicalServiceById);
 
             //group.MapPut("/{medicalcode}", UpdateMedicalServiceById);
 
@@ -87,10 +87,86 @@ namespace Kiosk.MedicalServices.APIs
                return Results.Problem(ex.Message);
                 
             }
-
-
-
-            
+  
         }
+
+        public static async Task<IResult> GetMedicalServices(IDbConnection connection)
+        {
+            try
+            {
+
+                const string sql = """
+                SELECT
+                MedicalId,
+                MedicalServiceName,
+                MedicalServiceCode,
+                CreatedAt
+                FROM MedicalServices
+                ORDER BY MedicalId;
+                
+                """;
+
+
+                var medicalservices = await connection.QueryAsync<MedicalServiceResponse>(sql);
+
+                return Results.Ok(medicalservices);
+                
+            }
+            catch (Exception ex)
+            {
+                
+                return Results.Problem(ex.Message);
+            }
+        }
+
+        //getting medical service by medical code
+        public static async Task<IResult> GetMedicalServiceById(int medicalId, IDbConnection connection)
+        {
+
+
+            try
+            {
+
+                const string sql = 
+                """
+                SELECT 
+                MedicalId,
+                MedicalServiceName,
+                MedicalServiceCode,
+                CreatedAt
+                FROM MedicalServices
+                WHERE MedicalId =@MedicalId
+                
+                """;
+                
+
+                var medicalService = await connection.QuerySingleOrDefaultAsync<MedicalServiceResponse>(
+                    sql,
+                    new
+                    {
+                        MedicalId = medicalId
+                    }
+
+
+                );
+
+                if(medicalService == null)
+                {
+                    return Results.NotFound("MedicalService is not found");
+                }
+
+                return Results.Ok(medicalService);
+            }
+            catch (Exception ex)
+            {
+                
+                return Results.Problem(ex.Message);
+            }
+        }
+
     }
+
+
+
+
 }
