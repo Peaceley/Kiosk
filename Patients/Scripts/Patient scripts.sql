@@ -56,3 +56,9 @@ VALUES
 )
 
 select * From patients
+
+select * from Medicalservices
+
+SELECT *
+FROM MedicalServices
+LIMIT 1;

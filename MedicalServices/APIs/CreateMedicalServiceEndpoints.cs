@@ -23,9 +23,9 @@ namespace Kiosk.MedicalServices.APIs
             group.MapGet("/", GetMedicalServices);
             group.MapGet("/{medicalId:int}", GetMedicalServiceById);
 
-            //group.MapPut("/{medicalcode}", UpdateMedicalServiceById);
+            group.MapPut("/{medicalId:int}", UpdateMedicalServiceById);
 
-            // group.MapDelete("/{medicalcode}", DeleteMedicalServiceById);
+            group.MapDelete("/{medicalId:int}", DeleteMedicalServiceById);
 
             return routes;
         }
@@ -42,7 +42,7 @@ namespace Kiosk.MedicalServices.APIs
             }
             
 
-            //calling the helper function to generate the MedicalServiceCode
+            //calling the helper function tKo generate the MedicalServiceCode
             string medicalServiceCode = MedicalHelper.GenerateServiceCode(medicalservice.MedicalServiceName);
 
 
@@ -89,7 +89,6 @@ namespace Kiosk.MedicalServices.APIs
             }
   
         }
-
         public static async Task<IResult> GetMedicalServices(IDbConnection connection)
         {
             try
@@ -123,7 +122,6 @@ namespace Kiosk.MedicalServices.APIs
         public static async Task<IResult> GetMedicalServiceById(int medicalId, IDbConnection connection)
         {
 
-
             try
             {
 
@@ -146,8 +144,6 @@ namespace Kiosk.MedicalServices.APIs
                     {
                         MedicalId = medicalId
                     }
-
-
                 );
 
                 if(medicalService == null)
@@ -160,6 +156,118 @@ namespace Kiosk.MedicalServices.APIs
             catch (Exception ex)
             {
                 
+                return Results.Problem(ex.Message);
+            }
+
+
+        }
+            //Updating the medical service by its id
+        public static async Task<IResult> UpdateMedicalServiceById(
+        int medicalId,
+        UpdateMedicalServiceRequest request,
+        IDbConnection connection)
+        {
+        try
+        {
+            // Validate request
+            if (string.IsNullOrWhiteSpace(request.MedicalServiceName))
+            {
+                return Results.BadRequest("Medical Service Name is required.");
+            }
+
+            // Check if the medical service exists
+            var medicalService = await connection.QuerySingleOrDefaultAsync<MedicalService>(
+                """
+                SELECT *
+                FROM MedicalServices
+                WHERE MedicalId = @MedicalId;
+                """,
+                new
+                {
+                    MedicalId = medicalId
+                });
+
+            if (medicalService is null)
+            {
+                return Results.NotFound("Medical Service not found.");
+            }
+
+            // Update the medical service name only
+            await connection.ExecuteAsync(
+                """
+                UPDATE MedicalServices
+                SET MedicalServiceName = @MedicalServiceName
+                WHERE MedicalId = @MedicalId;
+                """,
+                new
+                {
+                    MedicalId = medicalId,
+                    MedicalServiceName = request.MedicalServiceName
+                });
+
+            // Retrieve the updated record
+            var updatedMedicalService = await connection.QuerySingleAsync<MedicalService>(
+                """
+                SELECT *
+                FROM MedicalServices
+                WHERE MedicalId = @MedicalId;
+                """,
+                new
+                {
+                    MedicalId = medicalId
+                });
+
+            return Results.Ok(updatedMedicalService);
+            }
+            catch (Exception ex)
+            {
+                return Results.Problem(ex.Message);
+            }
+        }
+
+        
+    public static async Task<IResult> DeleteMedicalServiceById(
+    int medicalId,
+    IDbConnection connection)
+        {
+            try
+            {
+                // Check if the medical service exists
+                var medicalService = await connection.QuerySingleOrDefaultAsync<MedicalService>(
+                    """
+                    SELECT *
+                    FROM MedicalServices
+                    WHERE MedicalId = @MedicalId;
+                    """,
+                    new
+                    {
+                        MedicalId = medicalId
+                    });
+
+                if (medicalService is null)
+                {
+                    return Results.NotFound("Medical Service not found.");
+                }
+
+                // Delete the medical service
+                await connection.ExecuteAsync(
+                    """
+                    DELETE FROM MedicalServices
+                    WHERE MedicalId = @MedicalId;
+                    """,
+                    new
+                    {
+                        MedicalId = medicalId
+                    });
+
+                return Results.Ok(new
+                {
+                    Message = "Medical Service deleted successfully.",
+                    DeletedMedicalService = medicalService
+                });
+            }
+            catch (Exception ex)
+            {
                 return Results.Problem(ex.Message);
             }
         }
