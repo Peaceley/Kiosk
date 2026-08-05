@@ -34,3 +34,6 @@ TRUNCATE TABLE
     MedicalServices,
     Patients
 RESTART IDENTITY CASCADE;
+
+
+drop table patients CASCADE

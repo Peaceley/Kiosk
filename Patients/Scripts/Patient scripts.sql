@@ -7,7 +7,11 @@ CREATE TABLE Patients(
     Gender CHAR NOT NULL,
     Contact TEXT ,
     Address TEXT NOT NULL,
-    CreatedAt TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP, 
+    CreatedAt TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP 
 
 )
-
+--checking for the existence of all the tables
+select * from patients;
+select * from tokens;
+select * from medicalservices;
+select * from visits

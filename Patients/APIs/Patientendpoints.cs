@@ -28,7 +28,7 @@ public static class PatientEndpoints
         {
             int nextPatientId = await PatientHelpers.GetNextPatientId(connection);
             string patientNo = DateTime.Now.ToString("yy") + nextPatientId.ToString().PadLeft(3, '0');
-            Console.WriteLine(patientNo);
+            // Console.WriteLine(patientNo);
 
 
             // Inside a real app, you would save 'product' to a database here
@@ -111,7 +111,7 @@ public static class PatientEndpoints
         try
         {
             var parameter1 = new { PatientId = patientId };
-            var sql = @"DELETE FROM Students WHERE PatientId=patientId;";
+            var sql = "DELETE FROM Patients WHERE PatientId=@patientId;";
             var rowsAffected = await connection.ExecuteAsync(sql, parameter1);
             if (rowsAffected != 0)
             {
@@ -132,7 +132,6 @@ public static class PatientEndpoints
  
     private static async Task<IResult> UpdatePatient(int patientId, PatientNoUpdateRequests  updateRequest, IDbConnection connection)
     {
-
 
         var sql =
         """
@@ -156,6 +155,8 @@ public static class PatientEndpoints
             Contact = updateRequest.Contact,
             Address = updateRequest.Address
         };
+
+
         var patient = await connection.QuerySingleOrDefaultAsync<Patientresponse>(sql, parameter);
         return Results.Ok(patient);
     }
